@@ -100,6 +100,12 @@ main {
   border-radius: 2px;
   background: var(--photo-bg);
 }
+.portrait-figure { margin: 0; }
+.portrait-figure figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
 .text {
   min-width: 0;
   display: flex;
@@ -248,7 +254,10 @@ footer {
 <div class="page">
   <main>
   <section class="intro" id="about" aria-label="About">
-    <img class="portrait" src="flint-oneil.jpg" alt="Portrait of Flint O'Neil" width="720" height="720">
+    <figure class="portrait-figure">
+      <img class="portrait" src="flint-oneil.jpg" alt="Portrait of Flint O'Neil" width="720" height="720">
+      <figcaption>Photo by Vanessa Coleman</figcaption>
+    </figure>
     <div class="text">
       <h1 class="site-name">Flint O&rsquo;Neil</h1>
       <p class="bio">I am an Economics PhD Candidate at <a href="https://economics.stanford.edu" target="_blank" rel="noopener">Stanford University</a>. My fields are international macroeconomics and trade.</p>
