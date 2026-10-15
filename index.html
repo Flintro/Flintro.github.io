@@ -61,7 +61,6 @@ body {
   font-kerning: normal;
 }
 img { max-width: 100%; }
-[hidden] { display: none !important; }
 
 .strip {
   height: 6px;
@@ -92,20 +91,11 @@ img { max-width: 100%; }
   text-decoration: none;
 }
 .home { color: var(--fg); }
-.masthead nav {
+
+main {
   display: flex;
-  gap: 1.75rem;
-}
-.masthead nav a {
-  color: var(--muted);
-  padding-block: 0.2rem;
-  border-bottom: 1px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-.masthead nav a:hover { color: var(--fg); }
-.masthead nav a[aria-current="page"] {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  flex-direction: column;
+  gap: clamp(3.5rem, 10vh, 6rem);
 }
 
 .intro {
@@ -142,14 +132,18 @@ img { max-width: 100%; }
   font-size: clamp(1.25rem, 2.3vw, 1.45rem);
   line-height: 1.5;
 }
-.bio a, .paper a {
+.contact {
+  margin: 0;
+  color: var(--muted);
+}
+.bio a, .paper a, .contact a {
   color: inherit;
   text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   transition: color 0.15s ease;
 }
-.bio a:hover, .paper a:hover { color: var(--accent); }
+.bio a:hover, .paper a:hover, .contact a:hover { color: var(--accent); }
 .research {
   display: grid;
   grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
@@ -238,12 +232,6 @@ h2 {
   line-height: 1.6;
   text-wrap: pretty;
 }
-.status {
-  font-family: var(--font-caps);
-  letter-spacing: 0.04em;
-  color: var(--accent);
-}
-
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -269,7 +257,7 @@ footer {
   .portrait { width: min(13rem, 60%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bio a, .paper a, .masthead nav a, .abstract summary { transition: none; }
+  .bio a, .paper a, .contact a, .abstract summary { transition: none; }
 }
 </style>
 </head>
@@ -277,20 +265,17 @@ footer {
 <div class="strip" aria-hidden="true"></div>
 <div class="page">
   <header class="masthead">
-    <h1 class="site-name"><a class="home" href="#about">Flint O&rsquo;Neil</a></h1>
-    <nav aria-label="Sections">
-      <a href="#about" data-tab="about">About</a>
-      <a href="#research" data-tab="research">Research</a>
-    </nav>
+    <h1 class="site-name"><a class="home" href="/">Flint O&rsquo;Neil</a></h1>
   </header>
   <main>
-  <section class="intro" aria-label="About" data-panel="about">
+  <section class="intro" id="about" aria-label="About">
     <img class="portrait" src="flint-oneil.jpg" alt="Portrait of Flint O'Neil" width="720" height="720">
     <div class="text">
       <p class="bio">I am an Economics PhD Candidate at <a href="https://economics.stanford.edu" target="_blank" rel="noopener">Stanford University</a>. My fields are international macroeconomics and trade.</p>
+      <p class="contact"><a href="mailto:foneil@stanford.edu">foneil@stanford.edu</a></p>
     </div>
   </section>
-  <section class="research" aria-labelledby="research-title" data-panel="research">
+  <section class="research" id="research" aria-labelledby="research-title">
     <h2 id="research-title">Research</h2>
     <div class="research-list">
     <h3 class="papers-group">Working Papers</h3>
@@ -303,13 +288,16 @@ footer {
           <p>Why does manufacturing employment in emerging markets peak at half the levels advanced economies reached? We investigate this question through a quantitative trade model with structural change and rural-to-urban migration. Emerging markets have a comparative advantage in manufacturing, so trade alone should make them industrialize more, not less. Instead, we show that what holds them back are large rural-urban labor market wedges, which may reflect migration frictions or skill barriers. We estimate the wedges from wage gaps and migration flows. Without them, the median emerging economy does not prematurely deindustrialize, and instead reaches a peak manufacturing employment share roughly 10 percentage points higher than the data. By contrast, the rise of China contributes little to premature deindustrialization. Consistent with the model, we provide quasi-experimental evidence that a labor-saving agricultural technology increased industrialization in Brazil only in municipalities with young, mobile populations.</p>
         </details>
       </li>
+    </ul>
+    <h3 class="papers-group">Work in Progress</h3>
+    <ul class="papers">
       <li class="paper">
         <p class="paper-title">Global Trade Imbalances and the Incidence of Currency Interventions (JMP)</p>
-        <p class="paper-meta"><span>with Kevin Yin</span><span class="status">Coming soon</span></p>
+        <p class="paper-meta"><span>with Kevin Yin</span></p>
       </li>
       <li class="paper">
         <p class="paper-title">Technology Stealing and International Technology Diffusion</p>
-        <p class="paper-meta"><span>with Nick Cao</span><span class="status">Coming soon</span></p>
+        <p class="paper-meta"><span>with Nick Cao</span></p>
         <details class="abstract">
           <summary>Abstract</summary>
           <p>Production technologies differ enormously across countries. Given that wages are lower in poor countries, it is puzzling that international technology diffusion occurs so slowly. We develop a model of the speed of technology diffusion consistent with this phenomenon: although firms want to transfer production technology abroad to enjoy lower wages, doing so exposes them to the risk of foreign competitors imitating or stealing their technology. Critically, foreign governments cannot credibly commit ex ante to prevent technology stealing. In an optimal-contracting framework, slow technology transfers incentivize foreign governments to limit the rate of stealing by back-loading promises of future transfers. However, in the long run, once the firm has no technology left to transfer, its foreign competitors steal its technology, abetted by their government. Firms prefer higher short-run profits from producing abroad at lower wages over maintaining their long-run technological lead. Quantitatively, the model generates slow international technology diffusion but eventual catch-up over multiple decades.</p>
@@ -331,21 +319,5 @@ footer {
     <span>Stanford, California</span>
   </footer>
 </div>
-<script>
-(function () {
-  var panels = document.querySelectorAll("[data-panel]");
-  var tabs = document.querySelectorAll("[data-tab]");
-  function show() {
-    var id = location.hash === "#research" ? "research" : "about";
-    panels.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== id; });
-    tabs.forEach(function (t) {
-      if (t.getAttribute("data-tab") === id) t.setAttribute("aria-current", "page");
-      else t.removeAttribute("aria-current");
-    });
-  }
-  window.addEventListener("hashchange", function () { show(); window.scrollTo(0, 0); });
-  show();
-})();
-</script>
 </body>
 </html>
